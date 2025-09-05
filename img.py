@@ -1,0 +1,2 @@
+class imgs:
+    menu_img="AgACAgIAAxkBAANUaLq3R5l_ZWdVW_5KcOtgKp7GDG4AAqXxMRtQPdlJm7DsBvS7ZMABAAMCAAN5AAM2BA"

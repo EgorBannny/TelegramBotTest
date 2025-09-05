@@ -5,9 +5,10 @@ import logging
 from config import config
 from text_message import texts
 from keyboard import keyboards
+from img import imgs
 # aiogram
 from aiogram import Bot, Dispatcher
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, InputMediaPhoto
 from aiogram.filters import Command
 
 bot = Bot(config.TOKEN)
@@ -28,17 +29,16 @@ async def check_subscription(call: CallbackQuery):
         member = await bot.get_chat_member(config.CHANNEL_ID, user_id)
         if member.status in ["member", "administrator", "creator"]:
             
-            try:
-                await call.message.delete()
-            except:
-                pass  
             
-            await bot.send_message(
-                chat_id=call.message.chat.id,
-                text=texts.menu_caption,  
+            await call.message.edit_media(
+                media=InputMediaPhoto(
+                    media=imgs.menu_img,
+                    caption=texts.menu_caption,
+                    parse_mode="Markdown"
+                ),
                 reply_markup=keyboards.get_inline_keyboard_menu()
             )
-            await call.answer("✅ Вы подписаны!", show_alert=True)
+            
         else:
             await call.answer("❌ Вы не подписаны!", show_alert=True)
     except Exception as e:
@@ -51,7 +51,7 @@ async def main():
     
 if __name__ == '__main__':
     try:
-        logging.basicConfig(level=logging.INFO)
+        
         asyncio.run(main())
     except KeyboardInterrupt:
         print('Exit')
